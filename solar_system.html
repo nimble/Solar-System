@@ -17,8 +17,8 @@ window.onload = function() {
 container = document.createElement('div');
 document.body.appendChild(container);
 
-W = parseInt(document.body.clientWidth);
-H = parseInt(document.body.clientHeight);
+W = parseInt(window.innerWidth);
+H = parseInt(window.innerHeight);
 
 }
 
@@ -46,7 +46,7 @@ scene.add(earth);
 
 
 
-render = new THREE.CanvasRenderer();
+render = new THREE.WebGLRenderer();
 render.setSize(W,H);
 container.appendChild(render.domElement);
 var t = 0;
@@ -58,9 +58,11 @@ function animate(){
 
     sun.rotation.y+=0.001;
     earth.position.x = Math.sin(t*0.1) * 2000;
-    t+=Math.PI/180*2;
+    earth.position.z = Math.cos(t*0.1) * 1700;
 
-    reneder.render(scene, camera);
+    t+= Math.PI/180*2;
+
+reneder.render(scene, camera);
 }
 
 </script>
