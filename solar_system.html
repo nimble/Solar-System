@@ -24,7 +24,7 @@
 
 
 
-            camera = new THREE.PerspectiveCamera(45, W / H, 1, 10000);
+            camera = new THREE.PerspectiveCamera(45, W / H, 1, 1000000);
             camera.position.z = 6300;
             scene = new THREE.Scene();
 
@@ -48,14 +48,25 @@
             render.setSize(W, H);
             container.appendChild(render.domElement);
             var t = 0;
+
+            document.addEventListener('mousemove',function(event){
+                y = parseInt(event.offsetY);
+
+            });
+
+
             animate();
 
             function animate() {
                 requestAnimationFrame(animate);
 
                 sun.rotation.y += 0.001;
-                earth.position.x = Math.sin(t * 0.1) * 2000;
-                earth.position.z = Math.cos(t * 0.1) * 1700;
+                earth.position.x = Math.sin(t * 0.1) * 1500;
+                earth.position.z = Math.cos(t * 0.1) * 1500;
+
+                camera.position.y=y*5;
+                camera.lookAt(scene.position); 
+
 
                 t += Math.PI / 180 * 2;
 
