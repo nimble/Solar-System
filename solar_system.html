@@ -49,11 +49,16 @@ scene.add(earth);
 render = new THREE.CanvasRenderer();
 render.setSize(W,H);
 container.appendChild(render.domElement);
+var t = 0;
+animate();
 
 
 function animate(){
     requestAnimationFrame(animate);
+
     sun.rotation.y+=0.001;
+    earth.position.x = Math.sin(t*0.1) * 2000;
+    t+=Math.PI/180*2;
 
     reneder.render(scene, camera);
 }
