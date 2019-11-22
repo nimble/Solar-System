@@ -1,8 +1,8 @@
 <html>
 <head>
 <meta charset ="utf8">
-<title> CP411 Solar System Project </title>
-<script src = three.min.js"></script>
+<title> CP411 Solar System Project | Jona Sahota </title>
+<script src = three-min.js"></script>
     </head>
 
 <body>
@@ -25,7 +25,13 @@ H =  parseint(document.body.clientHeight);
 }
 
 camera = new THREE.PerspecticeCamera(45, W/H, 1, 10000);
+scene = new THREE.Scene();
 
+// Code...
+
+render = new THREE.CanvasRenderer();
+render.setSize(W,H);
+container.appendChild(render.domElement);
 
     </script>
 
