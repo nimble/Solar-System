@@ -1,0 +1,33 @@
+<html>
+<head>
+<meta charset ="utf8">
+<title> CP411 Solar System Project </title>
+<script src = three.min.js"></script>
+    </head>
+
+<body>
+
+<script>
+
+// Standard Variables / To be changed later.
+var scene, camera, render, container;
+var W,H;
+
+// On load function...
+window.onload = function() {
+
+container = document.createElement('div');
+document.body.appendChild(container);
+
+W = parseint(document.body.clientWidth);
+H =  parseint(document.body.clientHeight);
+
+}
+
+camera = new THREE.PerspecticeCamera(45, W/H, 1, 10000);
+
+
+    </script>
+
+</body>
+</html>
