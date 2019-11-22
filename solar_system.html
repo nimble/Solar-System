@@ -25,7 +25,7 @@
 
 
             camera = new THREE.PerspectiveCamera(45, W / H, 1, 10000);
-            camera.position.z = 4300;
+            camera.position.z = 6300;
             scene = new THREE.Scene();
 
             //Sun
@@ -41,7 +41,7 @@
             earth_geom = new THREE.SphereGeometry(50, 20, 20);
             earth_mat = new THREE.MeshNormalMaterial();
             earth = new THREE.Mesh(earth_geom, earth_mat);
-            earth.position.x = 2000;
+            earth.position.x = 1500;
             scene.add(earth);
 
             render = new THREE.WebGLRenderer();
@@ -65,7 +65,7 @@
 
             // everything now within `onload`
         }
-        
+
     </script>
 
 </body>
