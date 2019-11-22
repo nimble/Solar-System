@@ -2,7 +2,7 @@
 <head>
 <meta charset ="utf8">
 <title> CP411 Solar System Project | Jona Sahota & Jason Barboza </title>
-<script src = "https://github.com/mrdoob/three.js/blob/dev/build/three.min.js"></script>
+<script src = "three.min.js"></script>
 </head>
 
 <body>
@@ -41,6 +41,7 @@ var earth, earth_geom, earth_mat;
 earth_geom = new THREE.SphereGeometry(50, 20,20);
 earth_mat = new THREE.MeshNormalMaterial();
 earth = new THREE.Mesh(earth_geom,earth_mat);
+earth.position.x = 2000;
 scene.add(earth);
 
 
