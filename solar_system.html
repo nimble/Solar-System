@@ -8,7 +8,6 @@
 
 <body>
 
-
     <script>
         // Standard Variables / To be changed later.
         var scene, camera, render, container;
@@ -21,7 +20,6 @@
 
             W = parseInt(window.innerWidth);
             H = parseInt(window.innerHeight);
-
 
 
             camera = new THREE.PerspectiveCamera(45, W / H, 1, 1000000);
@@ -48,7 +46,7 @@
             }
 
             stars = new THREE.ParticleSystem(starsGeometry, starsMaterial);
-            stars.scale.set(50,50,50);
+            stars.scale.set(50, 50, 50);
             scene.add(stars);
 
 
@@ -69,8 +67,7 @@
             scene.add(earth);
 
 
-
-
+            // Renderer
             render = new THREE.WebGLRenderer();
             render.setSize(W, H);
             container.appendChild(render.domElement);
@@ -81,6 +78,7 @@
 
             });
 
+            // Call Animate function within load function.
             animate();
 
             function animate() {
