@@ -2,41 +2,46 @@
 
 <head>
     <meta charset="utf8">
+
     <title> CP411 Solar System Project | Jona Sahota & Jason Barboza </title>
+    <style>
+        body {
+            background: whitesmoke;
+            margin: 0px;
+        }
+    </style>
+
     <script src="three.min.js"></script>
+
 </head>
 
 <body>
+
 
     <script>
         // Standard Variables / To be changed later.
         var scene, camera, render, container;
         var W, H;
-
         // On load function...
         window.onload = function () {
             container = document.createElement('div');
             document.body.appendChild(container);
-
             W = parseInt(window.innerWidth);
             H = parseInt(window.innerHeight);
-
-
             camera = new THREE.PerspectiveCamera(45, W / H, 1, 1000000);
-            camera.position.z = 6300;
+            camera.position.z = 36300;
             scene = new THREE.Scene();
-
             // Adding Stars.
             var starsGeometry = new THREE.Geometry();
             var starsMaterial = new THREE.ParticleBasicMaterial({
-                color: 0xe6e6fa,
+                color: 0xbbbbbbb,
+                opacity: 0.6,
                 size: 1,
                 sizeAttenuation: false
             });
             var stars;
-
             // Adding stars to the Scene.
-            for (var i = 0; i < 5000; i++) {
+            for (var i = 0; i < 45000; i++) {
                 var vertex = new THREE.Vector3();
                 vertex.x = Math.random() * 2 - 1;
                 vertex.y = Math.random() * 2 - 1;
@@ -44,16 +49,19 @@
                 vertex.multiplyScalar(7000);
                 starsGeometry.vertices.push(vertex);
             }
-
             stars = new THREE.ParticleSystem(starsGeometry, starsMaterial);
             stars.scale.set(50, 50, 50);
             scene.add(stars);
 
-
             //Sun
             var sun, gun_geom, sun_mat;
-            sun_geom = new THREE.SphereGeometry(830, 30, 30);
-            sun_mat = new THREE.MeshNormalMaterial();
+            sun_geom = new THREE.SphereGeometry(2300, 80, 80);
+            var texture = THREE.ImageUtils.loadTexture('sun2.png');
+            texture.anisotropy = 8;
+            sun_mat = new THREE.MeshPhongMaterial({
+                map: texture,
+                emissive: 0xffffff
+            });
             sun = new THREE.Mesh(sun_geom, sun_mat);
             scene.add(sun);
 
@@ -61,39 +69,206 @@
             // Earth
             var earth, earth_geom, earth_mat;
             earth_geom = new THREE.SphereGeometry(50, 20, 20);
-            earth_mat = new THREE.MeshNormalMaterial();
+            var texture2 = THREE.ImageUtils.loadTexture('earth.png');
+            texture2.anisotropy = 8;
+            earth_mat = new THREE.MeshPhongMaterial({
+                map: texture2,
+                emissive: 0xffffff
+            });
+
             earth = new THREE.Mesh(earth_geom, earth_mat);
-            earth.position.x = 1500;
             scene.add(earth);
 
+            //Mercury Orbit
+            var m_geometry = new THREE.TorusGeometry(1000, 5, 16, 100);
+            var m_material = new THREE.MeshBasicMaterial({
+                color: 0xA8A8A8
+            });
+            var mer_torus = new THREE.Mesh(m_geometry, m_material);
+            mer_torus.rotation.x = Math.PI / 2;
+            scene.add(mer_torus);
 
-            // Renderer
+            //Venus Orbit
+            var v_geometry = new THREE.TorusGeometry(1200, 5, 16, 100);
+            var v_material = new THREE.MeshBasicMaterial({
+                color: 0xA8A8A8
+            });
+            var ven_torus = new THREE.Mesh(v_geometry, v_material);
+            ven_torus.rotation.x = Math.PI / 2;
+            scene.add(ven_torus);
+
+            //Earth Orbit
+            var e_geometry = new THREE.TorusGeometry(1500, 5, 16, 100);
+            var e_material = new THREE.MeshBasicMaterial({
+                color: 0xA8A8A8
+            });
+            var er_torus = new THREE.Mesh(e_geometry, e_material);
+            er_torus.rotation.x = Math.PI / 2;
+            scene.add(er_torus);
+
+            //Mars Orbit
+            var ma_geometry = new THREE.TorusGeometry(1800, 5, 16, 100);
+            var ma_material = new THREE.MeshBasicMaterial({
+                color: 0xA8A8A8
+            });
+            var mar_torus = new THREE.Mesh(ma_geometry, ma_material);
+            mar_torus.rotation.x = Math.PI / 2;
+            scene.add(mar_torus);
+
+            //Jupiter Orbit
+            var j_geometry = new THREE.TorusGeometry(2200, 5, 16, 100);
+            var j_material = new THREE.MeshBasicMaterial({
+                color: 0xA8A8A8
+            });
+            var jup_torus = new THREE.Mesh(j_geometry, j_material);
+            jup_torus.rotation.x = Math.PI / 2;
+            scene.add(jup_torus);
+
+            //Saturn Orbit
+            var s_geometry = new THREE.TorusGeometry(2400, 5, 16, 100);
+            var s_material = new THREE.MeshBasicMaterial({
+                color: 0xA8A8A8
+            });
+            var sat_torus = new THREE.Mesh(s_geometry, s_material);
+            sat_torus.rotation.x = Math.PI / 2;
+            scene.add(sat_torus);
+
+            //Uranus Orbit
+            var u_geometry = new THREE.TorusGeometry(2700, 5, 16, 100);
+            var u_material = new THREE.MeshBasicMaterial({
+                color: 0xA8A8A8
+            });
+            var ur_torus = new THREE.Mesh(u_geometry, u_material);
+            ur_torus.rotation.x = Math.PI / 2;
+            scene.add(ur_torus);
+
+            //Neptune Orbit
+            var n_geometry = new THREE.TorusGeometry(3000, 5, 16, 100);
+            var n_material = new THREE.MeshBasicMaterial({
+                color: 0xA8A8A8
+            });
+            var nep_torus = new THREE.Mesh(n_geometry, n_material);
+            nep_torus.rotation.x = Math.PI / 2;
+            scene.add(nep_torus);
+
+            //Pluto Orbit
+            var p_geometry = new THREE.TorusGeometry(3200, 5, 16, 100);
+            var p_material = new THREE.MeshBasicMaterial({
+                color: 0xA8A8A8
+            });
+            var pl_torus = new THREE.Mesh(p_geometry, p_material);
+            pl_torus.rotation.x = Math.PI / 2;
+            scene.add(pl_torus);
+
+            // Mercury
+            var mercury, mercury_geom, mercury_mat;
+            mercury_geom = new THREE.SphereGeometry(35, 20, 20);
+            mercury_mat = new THREE.MeshNormalMaterial();
+            mercury = new THREE.Mesh(mercury_geom, mercury_mat);
+            mercury.position.x = 1000;
+            //mercury.rotation.x = Math.PI / 1.9;
+            scene.add(mercury);
+
+            // Venus
+            var venus, venus_geom, venus_mat;
+            venus_geom = new THREE.SphereGeometry(47, 20, 20);
+            venus_mat = new THREE.MeshNormalMaterial();
+            venus = new THREE.Mesh(venus_geom, venus_mat);
+            venus.position.x = 1200;
+            scene.add(venus);
+
+            // Mars
+            var mars, mars_geom, mars_mat;
+            mars_geom = new THREE.SphereGeometry(39, 20, 20);
+            mars_mat = new THREE.MeshNormalMaterial();
+            mars = new THREE.Mesh(mars_geom, mars_mat);
+            mars.position.x = 1800;
+            scene.add(mars);
+
+            // Jupiter
+            var jupiter, jupiter_geom, jupiter_mat;
+            jupiter_geom = new THREE.SphereGeometry(90, 20, 20);
+            jupiter_mat = new THREE.MeshNormalMaterial();
+            jupiter = new THREE.Mesh(jupiter_geom, jupiter_mat);
+            jupiter.position.x = 2200;
+            scene.add(jupiter);
+
+            // Saturn
+            var saturn, saturn_geom, saturn_mat;
+            saturn_geom = new THREE.SphereGeometry(85, 20, 20);
+            saturn_mat = new THREE.MeshNormalMaterial();
+            saturn = new THREE.Mesh(saturn_geom, saturn_mat);
+            saturn.position.x = 2400;
+            scene.add(saturn);
+
+            // Uranus
+            var uranus, uranus_geom, uranus_mat;
+            uranus_geom = new THREE.SphereGeometry(70, 20, 20);
+            uranus_mat = new THREE.MeshNormalMaterial();
+            uranus = new THREE.Mesh(uranus_geom, uranus_mat);
+            uranus.position.x = 2700;
+            scene.add(uranus);
+
+            // Neptune
+            var neptune, neptune_geom, neptune_mat;
+            neptune_geom = new THREE.SphereGeometry(65, 20, 20);
+            neptune_mat = new THREE.MeshNormalMaterial();
+            neptune = new THREE.Mesh(neptune_geom, neptune_mat);
+            neptune.position.x = 3000;
+            scene.add(neptune);
+
+            // Pluto
+            var pluto, pluto_geom, pluto_mat;
+            pluto_geom = new THREE.SphereGeometry(28, 20, 20);
+            pluto_mat = new THREE.MeshNormalMaterial();
+            pluto = new THREE.Mesh(pluto_geom, pluto_mat);
+            pluto.position.x = 3200;
+            scene.add(pluto);
             render = new THREE.WebGLRenderer();
             render.setSize(W, H);
             container.appendChild(render.domElement);
+
             var t = 0;
-
-            document.addEventListener('mousemove', function (event) {
-                y = parseInt(event.offsetY);
-
-            });
-
-            // Call Animate function within load function.
             animate();
 
             function animate() {
                 requestAnimationFrame(animate);
-
+                // Sun
                 sun.rotation.y += 0.001;
+                // Earth
                 earth.position.x = Math.sin(t * 0.1) * 1500;
                 earth.position.z = Math.cos(t * 0.1) * 1500;
+                // Mercury
+                mercury.position.x = Math.sin(t * 0.1) * 1000;
+                mercury.position.z = Math.cos(t * 0.1) * 1000;
+                // Venus
+                venus.position.x = Math.sin(t * 0.1) * 1200;
+                venus.position.z = Math.cos(t * 0.1) * 1200;
+                // Mars
+                mars.position.x = Math.sin(t * 0.1) * 1800;
+                mars.position.z = Math.cos(t * 0.1) * 1800;
+                // Jupiter
+                jupiter.position.x = Math.sin(t * 0.1) * 2200;
+                jupiter.position.z = Math.cos(t * 0.1) * 2200;
+                // Saturn
+                saturn.position.x = Math.sin(t * 0.1) * 2400;
+                saturn.position.z = Math.cos(t * 0.1) * 2400;
+                // Uranus
+                uranus.position.x = Math.sin(t * 0.1) * 2700;
+                uranus.position.z = Math.cos(t * 0.1) * 2700;
+                // Neptune
+                neptune.position.x = Math.sin(t * 0.1) * 3000;
+                neptune.position.z = Math.cos(t * 0.1) * 3000;
+                // Pluto
+                pluto.position.x = Math.sin(t * 0.1) * 3200;
+                pluto.position.z = Math.cos(t * 0.1) * 3200;
 
-                camera.position.y = y * 5;
-                camera.lookAt(scene.position);
+                camera.position.z-=10;
+                camera.lookAt(earth.position);
 
-
+                //camera.lookAt(scene.position);
+                //camera.rotation.z = 0.2;
                 t += Math.PI / 180 * 2;
-
                 render.render(scene, camera);
             }
 
