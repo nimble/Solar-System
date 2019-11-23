@@ -28,6 +28,30 @@
             camera.position.z = 6300;
             scene = new THREE.Scene();
 
+            // Adding Stars.
+            var starsGeometry = new THREE.Geometry();
+            var starsMaterial = new THREE.ParticleBasicMaterial({
+                color: 0xe6e6fa,
+                size: 1,
+                sizeAttenuation: false
+            });
+            var stars;
+
+            // Adding stars to the Scene.
+            for (var i = 0; i < 5000; i++) {
+                var vertex = new THREE.Vector3();
+                vertex.x = Math.random() * 2 - 1;
+                vertex.y = Math.random() * 2 - 1;
+                vertex.z = Math.random() * 2 - 1;
+                vertex.multiplyScalar(7000);
+                starsGeometry.vertices.push(vertex);
+            }
+
+            stars = new THREE.ParticleSystem(starsGeometry, starsMaterial);
+            stars.scale.set(50,50,50);
+            scene.add(stars);
+
+
             //Sun
             var sun, gun_geom, sun_mat;
             sun_geom = new THREE.SphereGeometry(830, 30, 30);
@@ -44,16 +68,18 @@
             earth.position.x = 1500;
             scene.add(earth);
 
+
+
+
             render = new THREE.WebGLRenderer();
             render.setSize(W, H);
             container.appendChild(render.domElement);
             var t = 0;
 
-            document.addEventListener('mousemove',function(event){
+            document.addEventListener('mousemove', function (event) {
                 y = parseInt(event.offsetY);
 
             });
-
 
             animate();
 
@@ -64,19 +90,17 @@
                 earth.position.x = Math.sin(t * 0.1) * 1500;
                 earth.position.z = Math.cos(t * 0.1) * 1500;
 
-                camera.position.y=y*5;
-                camera.lookAt(scene.position); 
+                camera.position.y = y * 5;
+                camera.lookAt(scene.position);
 
 
                 t += Math.PI / 180 * 2;
 
-                // `render` now spelled correctly
                 render.render(scene, camera);
             }
 
             // everything now within `onload`
         }
-
     </script>
 
 </body>
