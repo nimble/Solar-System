@@ -83,10 +83,14 @@
             stars2 = new THREE.ParticleSystem(starsGeometry2, starsMaterial2);
             stars2.scale.set(70, 150, 100);
             scene.add(stars2);
+
+            var ambient =  new THREE.AmbientLight(0xffffff);
+            scene.add(ambient);
+
+
+
+
             // ------------------------------------------------------------
-
-
-
 
             //Sun
             var sun, gun_geom, sun_mat;
