@@ -1,5 +1,5 @@
 // Standard Variables / To be changed later.
-var scene, camera, renderer //, container;
+var scene, camera, renderer 
 var W, H;
 var delta = 1.; //Math.delta;
 
@@ -179,7 +179,27 @@ saturnRing.position.set(20000, 0, 0);
 scene.add(saturnRing);
 */
 
+// Uranus
+var uranus_geom = new THREE.SphereGeometry(1000,80,80);
+var uranus_material = new THREE.MeshPhongMaterial({
+    emissive: 0xffffff,
+    emissiveMap: loader.load('images/uranusmap.jpg')
+});
+var uranus = new THREE.Mesh(uranus_geom, uranus_material);
+uranus.position.set(18500, 0, 0);
 
+scene.add(uranus);
+
+// Neptune
+var neptune_geom = new THREE.SphereGeometry(1000,80,80);
+var neptune_material = new THREE.MeshPhongMaterial({
+    emissive: 0xffffff,
+    emissiveMap: loader.load('images/neptunemap.jpg')
+});
+var neptune = new THREE.Mesh(neptune_geom, neptune_material);
+neptune.position.set(21000, 0, 0);
+
+scene.add(neptune);
 
 
 
@@ -208,6 +228,8 @@ function animate() {
     mars.rotation.y +=0.002;
     jupiter.rotation.y +=0.002;
     saturn.rotation.y +=0.002;
+    uranus.rotation.y +=0.002;
+    neptune.rotation.y +=0.002;
 
 
     //earth.rotation.y += 1 / 16 * delta;
