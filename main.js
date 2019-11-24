@@ -1,15 +1,12 @@
 // Standard Variables / To be changed later.
 var scene, camera, renderer //, container;
 var W, H;
-var delta = Math.delta;
-
-//container = document.createElement('div');
-//document.body.appendChild(container);
+var delta = 1.; //Math.delta;
 
 W = parseInt(window.innerWidth);
 H = parseInt(window.innerHeight);
 
-// Camera Perspective (Change Camera Position when needed.)
+// Camera Position
 camera = new THREE.PerspectiveCamera(45, W / H, 1, 1000000);
 camera.position.z = 36300;
 scene = new THREE.Scene();
@@ -21,7 +18,7 @@ document.body.appendChild(renderer.domElement);
 
 // Adding Stars.
 var starsGeometry = new THREE.Geometry();
-var starsMaterial = new THREE.ParticleBasicMaterial({
+var starsMaterial = new THREE.PointsMaterial({
     color: 0xbbbbbbb,
     opacity: 0.6,
     size: 1,
@@ -39,14 +36,14 @@ for (var i = 0; i < 45000; i++) {
     starsGeometry.vertices.push(vertex);
 }
 
-stars = new THREE.ParticleSystem(starsGeometry, starsMaterial);
+stars = new THREE.Points(starsGeometry, starsMaterial);
 stars.scale.set(50, 50, 50);
 scene.add(stars);
 
 
 // ------------------------------------------------------------
 var starsGeometry2 = new THREE.Geometry();
-var starsMaterial2 = new THREE.ParticleBasicMaterial({
+var starsMaterial2 = new THREE.PointsMaterial({
     color: 0xbbbbbbb,
     opacity: 1,
     size: 1,
@@ -64,7 +61,7 @@ for (var i = 0; i < 10000; i++) {
     starsGeometry2.vertices.push(vertex);
 }
 
-stars2 = new THREE.ParticleSystem(starsGeometry2, starsMaterial2);
+stars2 = new THREE.Points(starsGeometry2, starsMaterial2);
 stars2.scale.set(70, 150, 100);
 scene.add(stars2);
 
@@ -76,47 +73,35 @@ scene.add(ambient);
 
 
 // ------------------------------------------------------------
+const loader = new THREE.TextureLoader();
+
 
 //Sun
 var sun, gun_geom, sun_mat;
 sun_geom = new THREE.SphereGeometry(2300, 80, 80);
-//texture.anisotropy = 8;
-sun_mat = new THREE.MeshPhongMaterial();
+sun_mat = new THREE.MeshPhongMaterial({
+    emissive: 0xffffff,
+    emissiveMap: loader.load('sunmap.jpg'),
+});
 sun = new THREE.Mesh(sun_geom, sun_mat);
-// sun_mat = THREE.ImageUtils.loadTexture('images/sunmap.jpg');
-sun_mat.bumpMap  = THREE.TextureLoader('images/sunmap.jpg');     
-sun_mat.bumpScale = 0.05;
-//var texture = THREE.ImageUtils.loadTexture('images/sunmap.jpg');
 scene.add(sun);
 
 
-/*
-// Earth
-var earth, earth_geom, earth_mat;
-earth_geom = new THREE.SphereGeometry(50, 20, 20);
-var texture2 = THREE.ImageUtils.loadTexture('images/earthmap1k.jpg');
-texture2.anisotropy = 8;
-sun_mat = new THREE.MeshPhongMaterial({
-    map: texture2,
-    emissive: 0xffffff
-});
-*/
 var geometry = new THREE.SphereGeometry(2300, 80, 80);
-var texture2 = THREE.TextureLoader('images/earthmap1k.jpg');
+var texture2 = loader.load('https://i.imgur.com/BpldqPj.jpg');
 
 var material = new THREE.MeshPhongMaterial({
-    map: texture2,
-    emissive: 0xffffff
+    emissiveMap: texture2,
+    emissive: 0xffffff,
 });
 var earth = new THREE.Mesh(geometry, material);
-
-
-//earth_mat = new THREE.MeshNormalMaterial();
-//earth = new THREE.Mesh(earth_geom, earth_mat);
+earth.position.set(5000, 0, 0);
 
 scene.add(earth);
 
 var t = 0;
+
+
 
 document.addEventListener('mousemove', function (event) {
     y = parseInt(event.offsetY);
@@ -131,11 +116,11 @@ function animate() {
     requestAnimationFrame(animate);
 
     sun.rotation.y += 0.001;
-    earth.rotation.x +=0.1;
-    earth.rotation.y +=0.1;
+    earth.rotation.y += 1 / 16 * delta;
 
     //camera.position.y = y * 5;
     camera.lookAt(scene.position);
+
 
     t += Math.PI / 180 * 2;
 
@@ -143,5 +128,3 @@ function animate() {
 }
 
 // everything now within `onload`
-
-
