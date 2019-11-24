@@ -12,6 +12,7 @@
     </style>
 
     <script src="three.min.js"></script>
+    
 
 </head>
 
@@ -84,7 +85,8 @@
             stars2.scale.set(70, 150, 100);
             scene.add(stars2);
 
-            var ambient =  new THREE.AmbientLight(0xffffff);
+            // Ambient light to the Scene.
+            var ambient =  new THREE.AmbientLight(0x222222);
             scene.add(ambient);
 
 
@@ -95,7 +97,7 @@
             //Sun
             var sun, gun_geom, sun_mat;
             sun_geom = new THREE.SphereGeometry(2300, 80, 80);
-            var texture = THREE.ImageUtils.loadTexture('sun2.png');
+            var texture = THREE.ImageUtils.loadTexture('images/sunmap.jpg');
             texture.anisotropy = 8;
             sun_mat = new THREE.MeshPhongMaterial({
                 map: texture,
@@ -108,7 +110,7 @@
             // Earth
             var earth, earth_geom, earth_mat;
             earth_geom = new THREE.SphereGeometry(50, 20, 20);
-            var texture2 = THREE.ImageUtils.loadTexture('earth.jpg');
+            var texture2 = THREE.ImageUtils.loadTexture('images/earthmap1k.jpg');
             texture2.anisotropy = 8;
             sun_mat = new THREE.MeshPhongMaterial({
                 map: texture2,
@@ -143,7 +145,7 @@
                 earth.position.x = Math.sin(t * 0.1) * 7500;
                 earth.position.z = Math.cos(t * 0.1) * 7500;
 
-                camera.position.y = y * 5;
+                //camera.position.y = y * 5;
                 camera.lookAt(scene.position);
 
 
