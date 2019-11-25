@@ -130,18 +130,6 @@ earth.position.set(8500, 0, 0);
 
 scene.add(earth);
 
-
-// Moon 
-var moon_geom = new THREE.SphereGeometry(500, 50, 50);
-var moon_material = new THREE.MeshPhongMaterial({
-    emissive: 0xffffff,
-    emissiveMap: loader.load('images/moonmap1k.jpg')
-});
-var moon = new THREE.Mesh(moon_geom, moon_material);
-moon.position.set(10000, 5000, 0);
-
-scene.add(moon);
-
 // Mercury
 var mercury_geom = new THREE.SphereGeometry(500, 80, 80);
 var mercury_material = new THREE.MeshPhongMaterial({
@@ -250,6 +238,10 @@ var yx = 0;
 function render() {
     renderer.render(scene, camera);
 }
+
+
+controls = new THREE.OrbitControls(camera, renderer.domElement);
+
 animate();
 
 function animate() {
@@ -268,8 +260,6 @@ function animate() {
     earth.position.x = Math.sin(t * 0.1) * 4000;
     earth.position.z = Math.cos(t * 0.1) * 2000;
 
-    moon.rotation.y += 0.002;
-
     venus.rotation.y += 0.002;
     mars.rotation.y += 0.002;
     jupiter.rotation.y += 0.002;
@@ -283,16 +273,7 @@ function animate() {
     t += Math.PI / 180 * 2;
     camera.lookAt(scene.position);
     renderer.render(scene, camera);
+    controls.update();
 }
 
-controls = new THREE.TrackballControls(camera);
-controls.rotateSpeed = 1.0;
-controls.zoomSpeed = 1.2;
-controls.panSpeed = 0.8;
-controls.noZoom = false;
-controls.noPan = false;
-controls.staticMoving = true;
-controls.dynamicDampingFactor = 0.3;
 
-
-controls.update();
