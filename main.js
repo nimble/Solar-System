@@ -18,11 +18,13 @@ W = parseInt(window.innerWidth);
 H = parseInt(window.innerHeight);
 
 // Camera Position
-camera = new THREE.PerspectiveCamera(10, W / H, 1, 100000);
+camera = new THREE.PerspectiveCamera(45, W / H, 1, 100000);
 
 camera.position.z = 36300;
 camera.position.y = 10000;
 camera.position.x = 36300;
+
+//camera.position.set(-1,100,200);
 
 scene = new THREE.Scene();
 
@@ -81,9 +83,26 @@ stars2.scale.set(70, 150, 100);
 scene.add(stars2);
 
 // Ambient light to the Scene.
-var ambient = new THREE.AmbientLight(0x222222);
-scene.add(ambient);
+var ambientLight = new THREE.AmbientLight(0x404040);
+scene.add(ambientLight);
 
+
+// Directional Lighting
+/*
+var directionalLight = new THREE.DirectionalLight(0xffffff);
+directionalLight.position.x = 1;
+directionalLight.position.y = 1;
+directionalLight.position.z = 0.75;
+directionalLight.position.normalize();
+scene.add(directionalLight);
+
+var directionalLight = new THREE.DirectionalLight(0x808080);
+directionalLight.position.x = -1;
+directionalLight.position.y = 1;
+directionalLight.position.z = -0.75;
+directionalLight.position.normalize();
+scene.add(directionalLight);
+*/
 
 // Solar System Models Added Here.
 // ---------------------------------------------------------
@@ -216,20 +235,21 @@ neptune.position.set(21000, 0, 0);
 
 scene.add(neptune);
 
-
-
 //----------------------------------------------------------------
+
+
+
 
 var t = 0;
 var yx = 0;
 
-document.addEventListener('mousemove', function (event) {
-    yx = parseInt(event.offsetY);
+// Event Listeners
 
-});
 
 // Call Animate function within load function.
-
+function render() {
+    renderer.render(scene, camera);
+}
 animate();
 
 function animate() {
@@ -265,11 +285,14 @@ function animate() {
     renderer.render(scene, camera);
 }
 
+controls = new THREE.TrackballControls(camera);
+controls.rotateSpeed = 1.0;
+controls.zoomSpeed = 1.2;
+controls.panSpeed = 0.8;
+controls.noZoom = false;
+controls.noPan = false;
+controls.staticMoving = true;
+controls.dynamicDampingFactor = 0.3;
 
-function updateMovement(){
-    // Keyboard clicks tracks movement.
-}
-// Uncomment when trialing.
-// updateMovement();
 
-// everything now within `onload`
+controls.update();
