@@ -1,5 +1,16 @@
+/* CP411 Solar System Project
+1. User controlled 3D Rendering [10]
+2. Texture mapping [10]
+3. User controlled Lighting [10]
+4. User controlled Animations [10]
+5. User controlled navigation [10]
+6. User controlled display of relevant information for the user [10]
+7. Easy of use [10]
+8. Aesthetically pleasing [10]
+9. Additional features for teaching [20] */
+
 // Standard Variables / To be changed later.
-var scene, camera, renderer 
+var scene, camera, renderer
 var W, H;
 var delta = 1.; //Math.delta;
 
@@ -7,8 +18,12 @@ W = parseInt(window.innerWidth);
 H = parseInt(window.innerHeight);
 
 // Camera Position
-camera = new THREE.PerspectiveCamera(45, W / H, 1, 1000000);
+camera = new THREE.PerspectiveCamera(10, W / H, 1, 100000);
+
 camera.position.z = 36300;
+camera.position.y = 10000;
+camera.position.x = 36300;
+
 scene = new THREE.Scene();
 
 // renderer
@@ -109,7 +124,7 @@ moon.position.set(10000, 5000, 0);
 scene.add(moon);
 
 // Mercury
-var mercury_geom = new THREE.SphereGeometry(1000,80,80);
+var mercury_geom = new THREE.SphereGeometry(500, 80, 80);
 var mercury_material = new THREE.MeshPhongMaterial({
     emissive: 0xffffff,
     emissiveMap: loader.load('images/mercurymap.jpg')
@@ -121,7 +136,7 @@ scene.add(mercury);
 
 
 // Venus
-var venus_geom = new THREE.SphereGeometry(1000,80,80);
+var venus_geom = new THREE.SphereGeometry(1000, 80, 80);
 var venus_material = new THREE.MeshPhongMaterial({
     emissive: 0xffffff,
     emissiveMap: loader.load('images/venusmap.jpg')
@@ -132,7 +147,7 @@ venus.position.set(6000, 0, 0);
 scene.add(venus);
 
 // Mars
-var mars_geom = new THREE.SphereGeometry(1000,80,80);
+var mars_geom = new THREE.SphereGeometry(1000, 80, 80);
 var mars_material = new THREE.MeshPhongMaterial({
     emissive: 0xffffff,
     emissiveMap: loader.load('images/mars_1k_color.jpg')
@@ -143,7 +158,7 @@ mars.position.set(11000, 0, 0);
 scene.add(mars);
 
 // Jupiter
-var jupiter_geom = new THREE.SphereGeometry(1000,80,80);
+var jupiter_geom = new THREE.SphereGeometry(1000, 80, 80);
 var jupiter_material = new THREE.MeshPhongMaterial({
     emissive: 0xffffff,
     emissiveMap: loader.load('images/jupitermap.jpg')
@@ -155,7 +170,7 @@ scene.add(jupiter);
 
 
 // Saturn
-var saturn_geom = new THREE.SphereGeometry(1000,80,80);
+var saturn_geom = new THREE.SphereGeometry(1000, 80, 80);
 var saturn_material = new THREE.MeshPhongMaterial({
     emissive: 0xffffff,
     emissiveMap: loader.load('images/saturnmap.jpg')
@@ -180,7 +195,7 @@ scene.add(saturnRing);
 */
 
 // Uranus
-var uranus_geom = new THREE.SphereGeometry(1000,80,80);
+var uranus_geom = new THREE.SphereGeometry(1000, 80, 80);
 var uranus_material = new THREE.MeshPhongMaterial({
     emissive: 0xffffff,
     emissiveMap: loader.load('images/uranusmap.jpg')
@@ -191,7 +206,7 @@ uranus.position.set(18500, 0, 0);
 scene.add(uranus);
 
 // Neptune
-var neptune_geom = new THREE.SphereGeometry(1000,80,80);
+var neptune_geom = new THREE.SphereGeometry(1000, 80, 80);
 var neptune_material = new THREE.MeshPhongMaterial({
     emissive: 0xffffff,
     emissiveMap: loader.load('images/neptunemap.jpg')
@@ -220,26 +235,41 @@ animate();
 function animate() {
     requestAnimationFrame(animate);
 
+    // Sun remains centered while rest of the planets rotate.
     sun.rotation.y += 0.001;
+
+    // Mercury Rotation
+    mercury.rotation.y += 0.002;
+    mercury.position.x = Math.sin(t * 0.1) * 4000;
+    mercury.position.z = Math.cos(t * 0.1) * 2000;
+
+    // Earth rotation around the Sun.
     earth.rotation.y += 0.002;
+    earth.position.x = Math.sin(t * 0.1) * 4000;
+    earth.position.z = Math.cos(t * 0.1) * 2000;
+
     moon.rotation.y += 0.002;
-    mercury.rotation.y+= 0.002;
-    venus.rotation.y+=0.002;
-    mars.rotation.y +=0.002;
-    jupiter.rotation.y +=0.002;
-    saturn.rotation.y +=0.002;
-    uranus.rotation.y +=0.002;
-    neptune.rotation.y +=0.002;
 
-
-    //earth.rotation.y += 1 / 16 * delta;
+    venus.rotation.y += 0.002;
+    mars.rotation.y += 0.002;
+    jupiter.rotation.y += 0.002;
+    saturn.rotation.y += 0.002;
+    uranus.rotation.y += 0.002;
+    neptune.rotation.y += 0.002;
 
     // Uncomment to move screen with cursor.
     //camera.position.y = yx * 5;
 
-    //t += Math.PI / 180 * 2;
+    t += Math.PI / 180 * 2;
     camera.lookAt(scene.position);
     renderer.render(scene, camera);
 }
+
+
+function updateMovement(){
+    // Keyboard clicks tracks movement.
+}
+// Uncomment when trialing.
+// updateMovement();
 
 // everything now within `onload`
