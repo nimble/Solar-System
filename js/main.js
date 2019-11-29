@@ -95,7 +95,8 @@ directionalLight.position.y = 1;
 directionalLight.position.z = 0.75;
 directionalLight.position.normalize();
 scene.add(directionalLight);
-
+*/
+/*
 var directionalLight = new THREE.DirectionalLight(0x808080);
 directionalLight.position.x = -1;
 directionalLight.position.y = 1;
@@ -112,7 +113,8 @@ const loader = new THREE.TextureLoader();
 var sun_geom = new THREE.SphereGeometry(2300, 80, 80);
 var sun_material = new THREE.MeshPhongMaterial({
     emissive: 0xffffff,
-    emissiveMap: loader.load('images/sun.jpg'),
+    emissiveMap: loader.load('images/sun.jpg')
+
 });
 var sun = new THREE.Mesh(sun_geom, sun_material);
 
@@ -123,8 +125,13 @@ scene.add(sun);
 var earth_geom = new THREE.SphereGeometry(1000, 80, 80);
 var earth_material = new THREE.MeshPhongMaterial({
     emissive: 0xffffff,
-    emissiveMap: loader.load('images/earthmap1k.jpg')
+    emissiveMap: loader.load('images/earthmap1k.jpg'),
+    bumpMap: loader.load('images/earthbump1k.jpg'),
+    bumpScale: 0.05,
+    specularMap: loader.load('images/earthspec1k.jpg'),
+    specular: new THREE.Color('grey'),
 });
+
 var earth = new THREE.Mesh(earth_geom, earth_material);
 earth.position.set(8500, 0, 0);
 
@@ -225,21 +232,14 @@ scene.add(neptune);
 
 //----------------------------------------------------------------
 
-
-
-
 var t = 0;
 var yx = 0;
 
-// Event Listeners
-
-
-// Call Animate function within load function.
 function render() {
     renderer.render(scene, camera);
 }
 
-
+// Controls using Mouse and Keys.
 controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 animate();
@@ -252,28 +252,51 @@ function animate() {
 
     // Mercury Rotation
     mercury.rotation.y += 0.002;
-    mercury.position.x = Math.sin(t * 0.1) * 4000;
-    mercury.position.z = Math.cos(t * 0.1) * 2000;
+    mercury.position.x = Math.sin(t * 1) * 4000;
+    mercury.position.z = Math.cos(t * 1) * 4000;
+
+
+    // Venus Rotation
+    venus.rotation.y += 0.002;
+    venus.position.x = Math.sin(t * 0.1) * 7000;
+    venus.position.z = Math.cos(t * 0.1) * 7000;
+
 
     // Earth rotation around the Sun.
     earth.rotation.y += 0.002;
-    earth.position.x = Math.sin(t * 0.1) * 4000;
-    earth.position.z = Math.cos(t * 0.1) * 2000;
+    earth.position.x = Math.sin(t * 0.1) * 10000;
+    earth.position.z = Math.cos(t * 0.1) * 10000;
 
-    venus.rotation.y += 0.002;
+    // Mars Rotation
     mars.rotation.y += 0.002;
+    mars.position.x = Math.sin(t * 0.1) * 13000;
+    mars.position.z = Math.cos(t * 0.1) * 13000;
+
+    // Jupiter Rotation
     jupiter.rotation.y += 0.002;
+    jupiter.position.x = Math.sin(t * 0.1) * 16000;
+    jupiter.position.z = Math.cos(t * 0.1) * 16000;
+
+    // Saturn Rotation
     saturn.rotation.y += 0.002;
+    saturn.position.x = Math.sin(t * 0.1) * 19000;
+    saturn.position.z = Math.cos(t * 0.1) * 19000;
+
+    // Uranus Rotation
     uranus.rotation.y += 0.002;
+    uranus.position.x = Math.sin(t * 0.1) * 22000;
+    uranus.position.z = Math.cos(t * 0.1) * 22000;
+
+    // Neptune Rotation
     neptune.rotation.y += 0.002;
+    neptune.position.x = Math.sin(t * 0.1) * 25000;
+    neptune.position.z = Math.cos(t * 0.1) * 25000;
 
     // Uncomment to move screen with cursor.
     //camera.position.y = yx * 5;
 
     t += Math.PI / 180 * 2;
     camera.lookAt(scene.position);
-    renderer.render(scene, camera);
     controls.update();
+    renderer.render(scene, camera);
 }
-
-
