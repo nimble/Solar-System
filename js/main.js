@@ -82,34 +82,14 @@ stars2 = new THREE.Points(starsGeometry2, starsMaterial2);
 stars2.scale.set(70, 150, 100);
 scene.add(stars2);
 
-// Ambient light to the Scene.
-var ambientLight = new THREE.AmbientLight(0x404040);
-scene.add(ambientLight);
 
 
-// Directional Lighting
-/*
-var directionalLight = new THREE.DirectionalLight(0xffffff);
-directionalLight.position.x = 1;
-directionalLight.position.y = 1;
-directionalLight.position.z = 0.75;
-directionalLight.position.normalize();
-scene.add(directionalLight);
-*/
-/*
-var directionalLight = new THREE.DirectionalLight(0x808080);
-directionalLight.position.x = -1;
-directionalLight.position.y = 1;
-directionalLight.position.z = -0.75;
-directionalLight.position.normalize();
-scene.add(directionalLight);
-*/
-
-// Solar System Models Added Here.
 // ---------------------------------------------------------
+// SOLAR SYSTEM PLANETS IMPLEMENTED HERE
+
 const loader = new THREE.TextureLoader();
 
-//Sun
+// SUN
 var sun_geom = new THREE.SphereGeometry(2300, 80, 80);
 var sun_material = new THREE.MeshPhongMaterial({
     emissiveMap: loader.load('images/sun.jpg'),
@@ -118,7 +98,7 @@ var sun_material = new THREE.MeshPhongMaterial({
 });
 var sun = new THREE.Mesh(sun_geom, sun_material);
 
-
+// SUN GLOW
 var spriteMaterial = new THREE.SpriteMaterial({
     map: new THREE.ImageUtils.loadTexture("images/glow.png"), 
     useScreenCoordinates: false, 
@@ -133,44 +113,54 @@ sun.add(sprite); // This centers the glow at the sun.
 scene.add(sun);
 
 
-// Earth.
-var earth_geom = new THREE.SphereGeometry(1000, 80, 80);
-var earth_material = new THREE.MeshPhongMaterial({
-    emissive: 0xffffff,
-    emissiveMap: loader.load('images/earthmap1k.jpg'),
-    bumpMap : loader.load('images/earthbump1k.jpg'),
-    bumpScale : 0.05,
-    specularMap: loader.load('images/earthspec1k.jpg'),
-    specular: new THREE.Color('grey')
-});
+// MOON 
 
-var earth = new THREE.Mesh(earth_geom, earth_material);
+var moon = new THREE.Mesh(
+    new THREE.SphereGeometry(1000, 80, 80),
+    new THREE.MeshPhongMaterial({
+        emissiveMap: loader.load('images/moonmap4k.jpg'),
+        emissive: 0xffffff,
+        bumpMap: loader.load('images/moonbump4k.jpg'),
+        bumpScale: 0.005,
+        emissive: 0xffffff
+    }
+    )
+);
+moon.position.set(4000,0,0)
+scene.add(moon)
+
+
+// EARTH.
+
+var earth = new THREE.Mesh(
+    new THREE.SphereGeometry(1000, 80, 80),
+    new THREE.MeshPhongMaterial({
+        emissive: 0xffffff,
+        emissiveMap: loader.load('images/earthmap1k.jpg'),
+        bumpMap : loader.load('images/earthbump1k.jpg'),
+        bumpScale : 0.05,
+        specularMap: loader.load('images/earthspec1k.jpg'),
+        specular: new THREE.Color('grey')
+    })
+);
+
+
+// EARTH CLOUDS
+var clouds = new THREE.Mesh(
+    new THREE.Mesh(
+        new THREE.SphereGeometry(0.503, 32, 32),
+        new THREE.MeshPhongMaterial({
+          map: loader.load('images/fair_clouds_8k.jpg'),
+          transparent: true
+        })
+)
+);
+
 earth.position.set(8500, 0, 0);
-
-
-// Adding Clouds to Earth.
-var cloud_geometry   = new THREE.SphereGeometry(1000, 80, 80)
-var cloud_material  = new THREE.MeshPhongMaterial({
-  map     : loader.load('images/earthcloudmap.jpg'),
-  side        : THREE.DoubleSide,
-  opacity     : 0.8,
-  transparent : true,
-  depthWrite  : false,
-})
-var cloudMesh = new THREE.Mesh(cloud_geometry, cloud_material)
-earth.add(cloudMesh)
-
-
 scene.add(earth);
 
-const pointLight = new THREE.PointLight(0xFFFFFF);
-//pointLight.position.x = 50;
-//pointLight.position.y = 10;
-//pointLight.position.z = 100;
-scene.add(pointLight);
 
-
-// Mercury
+// MERCURY
 var mercury_geom = new THREE.SphereGeometry(500, 80, 80);
 var mercury_material = new THREE.MeshPhongMaterial({
     emissive: 0xffffff,
@@ -262,14 +252,41 @@ var neptune = new THREE.Mesh(neptune_geom, neptune_material);
 neptune.position.set(21000, 0, 0);
 
 scene.add(neptune);
+// ---------------------------------------------------------------
+
+//----------------------------------------------------------------
+// Ambient Lightining and Directional Lightning DONE BELOW
+
+/*
+scene.add(new THREE.AmbientLight(0x404040));
+var light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(5,3,5);
+scene.add(light);
+
+// Ambient light to the Scene.
+var ambientLight = new THREE.AmbientLight(0x404040);
+scene.add(ambientLight);
 
 
+// Directional Lighting
 
-var erth = new THREEx.Planets.createEarth()
-var earth_cloud = new THREEx.Planets.createEarthCloud()
-erth.add(earth_cloud);
-erth.position.set(10000, 0, 0);
-scene.add(erth);
+var directionalLight = new THREE.DirectionalLight(0xffffff);
+directionalLight.position.x = 1;
+directionalLight.position.y = 1;
+directionalLight.position.z = 0.75;
+directionalLight.position.normalize();
+scene.add(directionalLight);
+
+
+var directionalLight = new THREE.DirectionalLight(0x808080);
+directionalLight.position.x = -1;
+directionalLight.position.y = 1;
+directionalLight.position.z = -0.75;
+directionalLight.position.normalize();
+scene.add(directionalLight);
+*/
+
+
 
 //----------------------------------------------------------------
 
