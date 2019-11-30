@@ -112,11 +112,23 @@ const loader = new THREE.TextureLoader();
 //Sun
 var sun_geom = new THREE.SphereGeometry(2300, 80, 80);
 var sun_material = new THREE.MeshPhongMaterial({
-    emissive: 0xffffff,
-    emissiveMap: loader.load('images/sun.jpg')
+    emissiveMap: loader.load('images/sun.jpg'),
+    emissive: 0xffffff
 
 });
 var sun = new THREE.Mesh(sun_geom, sun_material);
+
+
+var spriteMaterial = new THREE.SpriteMaterial({
+    map: new THREE.ImageUtils.loadTexture("images/glow.png"), 
+    useScreenCoordinates: false, 
+    color: 0xffffee, 
+    transparent: false, 
+    blending: THREE.AdditiveBlending
+        });
+var sprite = new THREE.Sprite(spriteMaterial);
+sprite.scale.set(7000, 7000, 7000);
+sun.add(sprite); // This centers the glow at the sun.
 
 scene.add(sun);
 
@@ -126,16 +138,37 @@ var earth_geom = new THREE.SphereGeometry(1000, 80, 80);
 var earth_material = new THREE.MeshPhongMaterial({
     emissive: 0xffffff,
     emissiveMap: loader.load('images/earthmap1k.jpg'),
-    bumpMap: loader.load('images/earthbump1k.jpg'),
-    bumpScale: 0.05,
+    bumpMap : loader.load('images/earthbump1k.jpg'),
+    bumpScale : 0.05,
     specularMap: loader.load('images/earthspec1k.jpg'),
-    specular: new THREE.Color('grey'),
+    specular: new THREE.Color('grey')
 });
 
 var earth = new THREE.Mesh(earth_geom, earth_material);
 earth.position.set(8500, 0, 0);
 
+
+// Adding Clouds to Earth.
+var cloud_geometry   = new THREE.SphereGeometry(1000, 80, 80)
+var cloud_material  = new THREE.MeshPhongMaterial({
+  map     : loader.load('images/earthcloudmap.jpg'),
+  side        : THREE.DoubleSide,
+  opacity     : 0.8,
+  transparent : true,
+  depthWrite  : false,
+})
+var cloudMesh = new THREE.Mesh(cloud_geometry, cloud_material)
+earth.add(cloudMesh)
+
+
 scene.add(earth);
+
+const pointLight = new THREE.PointLight(0xFFFFFF);
+//pointLight.position.x = 50;
+//pointLight.position.y = 10;
+//pointLight.position.z = 100;
+scene.add(pointLight);
+
 
 // Mercury
 var mercury_geom = new THREE.SphereGeometry(500, 80, 80);
@@ -230,6 +263,14 @@ neptune.position.set(21000, 0, 0);
 
 scene.add(neptune);
 
+
+
+var erth = new THREEx.Planets.createEarth()
+var earth_cloud = new THREEx.Planets.createEarthCloud()
+erth.add(earth_cloud);
+erth.position.set(10000, 0, 0);
+scene.add(erth);
+
 //----------------------------------------------------------------
 
 var t = 0;
@@ -300,3 +341,4 @@ function animate() {
     controls.update();
     renderer.render(scene, camera);
 }
+//requestAnimationFrame(update);
