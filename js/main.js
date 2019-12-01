@@ -14,6 +14,7 @@ var scene, camera, renderer
 var W, H;
 var delta = 1.; //Math.delta;
 
+
 W = parseInt(window.innerWidth);
 H = parseInt(window.innerHeight);
 
@@ -32,6 +33,7 @@ scene = new THREE.Scene();
 renderer = new THREE.WebGLRenderer();
 renderer.setSize(W, H);
 document.body.appendChild(renderer.domElement);
+
 
 // Adding Stars.
 var starsGeometry = new THREE.Geometry();
