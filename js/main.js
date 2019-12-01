@@ -14,7 +14,6 @@ var scene, camera, renderer
 var W, H;
 var delta = 1.; //Math.delta;
 
-
 W = parseInt(window.innerWidth);
 H = parseInt(window.innerHeight);
 
@@ -85,6 +84,17 @@ stars2.scale.set(70, 150, 100);
 scene.add(stars2);
 
 
+var intensity = 0.2;
+lights1 = new THREE.AmbientLight(0xffffff,intensity);
+lights2 = new THREE.PointLight(0xffffff,0.8,1000000,0.25);
+lights2.shadow.mapSize.width = 512;  // default
+lights2.shadow.mapSize.height = 512; // default
+lights2.shadow.camera.near = 0.5;       // default
+lights2.shadow.camera.far = 500
+lights2.position.set = (0,0,0); // Center of the sun.
+scene.add(lights1);
+scene.add(lights2);
+
 
 // ---------------------------------------------------------
 // SOLAR SYSTEM PLANETS IMPLEMENTED HERE
@@ -92,7 +102,7 @@ scene.add(stars2);
 const loader = new THREE.TextureLoader();
 
 // SUN
-var sun_geom = new THREE.SphereGeometry(2300, 80, 80);
+var sun_geom = new THREE.SphereGeometry(8000, 80, 80);
 var sun_material = new THREE.MeshPhongMaterial({
     emissiveMap: loader.load('images/sun.jpg'),
     emissive: 0xffffff
@@ -102,7 +112,7 @@ var sun = new THREE.Mesh(sun_geom, sun_material);
 
 // SUN GLOW
 var spriteMaterial = new THREE.SpriteMaterial({
-    map: new THREE.ImageUtils.loadTexture("images/glow.png"),
+    map: new THREE.ImageUtils.loadTexture("images/sunlight3.png"),
     useScreenCoordinates: false,
     color: 0xffffee,
     transparent: false,
@@ -110,7 +120,7 @@ var spriteMaterial = new THREE.SpriteMaterial({
 });
 var sprite = new THREE.Sprite(spriteMaterial);
 sprite.scale.set(7000, 7000, 7000);
-sun.add(sprite); // This centers the glow at the sun.
+scene.add(sprite); // This centers the glow at the sun.
 
 scene.add(sun);
 
@@ -124,7 +134,7 @@ var moon = new THREE.Mesh(
         emissive: 0xffffff,
         bumpMap: loader.load('images/moonbump4k.jpg'),
         bumpScale: 0.005,
-       
+
     })
 );
 moon.position.set(4000, 0, 0)
@@ -149,12 +159,12 @@ var earth = new THREE.Mesh(
 // EARTH CLOUDS
 function createClouds() {
     return new THREE.Mesh(
-        new THREE.SphereGeometry(800, 80, 80),			
+        new THREE.SphereGeometry(800, 80, 80),
         new THREE.MeshPhongMaterial({
             map: loader.load('images/fair_clouds_8k.jpg'),
             transparent: true,
         })
-    );		
+    );
 }
 
 earth.position.set(8500, 0, 0);
@@ -163,9 +173,11 @@ scene.add(earth);
 
 
 // EARTH ORBIT
-var e_geometry = new THREE.TorusGeometry( 19000, 40, 16, 100 );
-var e_material = new THREE.MeshBasicMaterial( { color: 0xA8A8A8 } );
-var e_torus = new THREE.Mesh( e_geometry, e_material );
+var e_geometry = new THREE.TorusGeometry(19000, 40, 16, 100);
+var e_material = new THREE.MeshBasicMaterial({
+    color: 0xA8A8A8
+});
+var e_torus = new THREE.Mesh(e_geometry, e_material);
 e_torus.rotation.x = Math.PI / 2;
 scene.add(e_torus);
 
@@ -175,11 +187,11 @@ scene.add(e_torus);
 var mercury = new THREE.Mesh(
     new THREE.SphereGeometry(400, 80, 80),
     new THREE.MeshPhongMaterial({
-    emissive: 0xffffff,
-    emissiveMap: loader.load('images/mercurymap.jpg'),
-    bumpMap: loader.load('images/mercurybump.jpg'),
-    bumpScale: 0.005,
-})
+        emissive: 0xffffff,
+        emissiveMap: loader.load('images/mercurymap.jpg'),
+        bumpMap: loader.load('images/mercurybump.jpg'),
+        bumpScale: 0.005,
+    })
 );
 
 mercury.position.set(3500, 0, 0);
@@ -188,9 +200,11 @@ scene.add(mercury);
 
 // MERCURY ORBIT
 
-var m_geometry = new THREE.TorusGeometry( 10000, 40, 16, 100 );
-var m_material = new THREE.MeshBasicMaterial( { color: 0xA8A8A8 } );
-var mer_torus = new THREE.Mesh( m_geometry, m_material );
+var m_geometry = new THREE.TorusGeometry(10000, 40, 16, 100);
+var m_material = new THREE.MeshBasicMaterial({
+    color: 0xA8A8A8
+});
+var mer_torus = new THREE.Mesh(m_geometry, m_material);
 mer_torus.rotation.x = Math.PI / 2;
 scene.add(mer_torus);
 
@@ -200,19 +214,21 @@ scene.add(mer_torus);
 var venus = new THREE.Mesh(
     new THREE.SphereGeometry(1000, 80, 80),
     new THREE.MeshPhongMaterial({
-    emissive: 0xffffff,
-    emissiveMap: loader.load('images/venusmap.jpg'),
-    bumpMap: loader.load('images/venusbump.jpg'),
-    bumpScale: 0.005,
-})
+        emissive: 0xffffff,
+        emissiveMap: loader.load('images/venusmap.jpg'),
+        bumpMap: loader.load('images/venusbump.jpg'),
+        bumpScale: 0.005,
+    })
 );
 venus.position.set(6000, 0, 0);
 scene.add(venus);
 
 // VENUS ORBIT
-var v_geometry = new THREE.TorusGeometry( 14000, 40, 16, 100 );
-var v_material = new THREE.MeshBasicMaterial( { color: 0xA8A8A8 } );
-var v_torus = new THREE.Mesh( v_geometry, v_material );
+var v_geometry = new THREE.TorusGeometry(14000, 40, 16, 100);
+var v_material = new THREE.MeshBasicMaterial({
+    color: 0xA8A8A8
+});
+var v_torus = new THREE.Mesh(v_geometry, v_material);
 v_torus.rotation.x = Math.PI / 2;
 scene.add(v_torus);
 
@@ -223,11 +239,11 @@ scene.add(v_torus);
 var mars = new THREE.Mesh(
     new THREE.SphereGeometry(1000, 80, 80),
     new THREE.MeshPhongMaterial({
-    emissive: 0xffffff,
-    emissiveMap: loader.load('images/marsmap1k.jpg'),
-    bumpMap: loader.load('images/marsbump1k.jpg'),
-    bumpScale: 0.005,
-})
+        emissive: 0xffffff,
+        emissiveMap: loader.load('images/marsmap1k.jpg'),
+        bumpMap: loader.load('images/marsbump1k.jpg'),
+        bumpScale: 0.005,
+    })
 );
 
 mars.position.set(11000, 0, 0);
@@ -235,9 +251,11 @@ scene.add(mars);
 
 
 // MARS ORBIT
-var m_geometry = new THREE.TorusGeometry( 23000, 40, 16, 100 );
-var m_material = new THREE.MeshBasicMaterial( { color: 0xA8A8A8 } );
-var m_torus = new THREE.Mesh( m_geometry, m_material );
+var m_geometry = new THREE.TorusGeometry(23000, 40, 16, 100);
+var m_material = new THREE.MeshBasicMaterial({
+    color: 0xA8A8A8
+});
+var m_torus = new THREE.Mesh(m_geometry, m_material);
 m_torus.rotation.x = Math.PI / 2;
 scene.add(m_torus);
 
@@ -247,9 +265,9 @@ scene.add(m_torus);
 var jupiter = new THREE.Mesh(
     new THREE.SphereGeometry(1000, 80, 80),
     new THREE.MeshPhongMaterial({
-    emissive: 0xffffff,
-    emissiveMap: loader.load('images/jupitermap.jpg')
-})
+        emissive: 0xffffff,
+        emissiveMap: loader.load('images/jupitermap.jpg')
+    })
 );
 
 jupiter.position.set(13500, 0, 0);
@@ -257,9 +275,11 @@ scene.add(jupiter);
 
 
 // JUPITER ORBIT
-var j_geometry = new THREE.TorusGeometry( 31000, 40, 16, 100 );
-var j_material = new THREE.MeshBasicMaterial( { color: 0xA8A8A8 } );
-var j_torus = new THREE.Mesh( j_geometry, j_material );
+var j_geometry = new THREE.TorusGeometry(31000, 40, 16, 100);
+var j_material = new THREE.MeshBasicMaterial({
+    color: 0xA8A8A8
+});
+var j_torus = new THREE.Mesh(j_geometry, j_material);
 j_torus.rotation.x = Math.PI / 2;
 scene.add(j_torus);
 
@@ -269,17 +289,19 @@ scene.add(j_torus);
 var saturn = new THREE.Mesh(
     new THREE.SphereGeometry(1000, 80, 80),
     new THREE.MeshPhongMaterial({
-    emissive: 0xffffff,
-    emissiveMap: loader.load('images/saturnmap.jpg')
-})
+        emissive: 0xffffff,
+        emissiveMap: loader.load('images/saturnmap.jpg')
+    })
 );
 saturn.position.set(16000, 0, 0);
 scene.add(saturn);
 
 // SATURN ORBIT
-var s_geometry = new THREE.TorusGeometry( 40000, 40, 16, 100 );
-var s_material = new THREE.MeshBasicMaterial( { color: 0xA8A8A8 } );
-var s_torus = new THREE.Mesh( s_geometry, s_material );
+var s_geometry = new THREE.TorusGeometry(40000, 40, 16, 100);
+var s_material = new THREE.MeshBasicMaterial({
+    color: 0xA8A8A8
+});
+var s_torus = new THREE.Mesh(s_geometry, s_material);
 s_torus.rotation.x = Math.PI / 2;
 scene.add(s_torus);
 
@@ -290,15 +312,15 @@ var radius = 1000;
 var segments = 100;
 
 function createSaturnRings(radius, segments) {
-    return new THREE.Mesh(new THREE.XRingGeometry(1.2 * radius, 2 * radius, 2 * segments, 5, 0, Math.PI * 2), 
-    new THREE.MeshBasicMaterial({
-        map: loader.load('images/saturn-rings-2.png'),
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.6
-    }));
+    return new THREE.Mesh(new THREE.XRingGeometry(1.2 * radius, 2 * radius, 2 * segments, 5, 0, Math.PI * 2),
+        new THREE.MeshBasicMaterial({
+            map: loader.load('images/saturn-rings-2.png'),
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.6
+        }));
 }
-var saturnRing = createSaturnRings(radius,segments);
+var saturnRing = createSaturnRings(radius, segments);
 saturnRing.position.set(6000, 0, 0);
 
 scene.add(saturnRing);
@@ -322,15 +344,15 @@ var radius1 = 800;
 var segments1 = 100;
 
 function createUranusRings(radius1, segments1) {
-    return new THREE.Mesh(new THREE.XRingGeometry(1.2 * radius1, 2 * radius1, 2 * segments1, 5, 0, Math.PI * 2), 
-    new THREE.MeshBasicMaterial({
-        map: loader.load('images/uranusringcolour.jpg'),
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.6
-    }));
+    return new THREE.Mesh(new THREE.XRingGeometry(1.2 * radius1, 2 * radius1, 2 * segments1, 5, 0, Math.PI * 2),
+        new THREE.MeshBasicMaterial({
+            map: loader.load('images/uranusringcolour.jpg'),
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.6
+        }));
 }
-var uranusRing = createUranusRings(radius1,segments1);
+var uranusRing = createUranusRings(radius1, segments1);
 
 uranusRing.position.set(22000, 0, 0);
 scene.add(uranusRing);
@@ -338,21 +360,23 @@ scene.add(uranusRing);
 
 
 // URANUS ORBIT
-var u_geometry = new THREE.TorusGeometry( 50000, 40, 16, 100 );
-var u_material = new THREE.MeshBasicMaterial( { color: 0xA8A8A8 } );
-var u_torus = new THREE.Mesh( u_geometry, u_material );
+var u_geometry = new THREE.TorusGeometry(50000, 40, 16, 100);
+var u_material = new THREE.MeshBasicMaterial({
+    color: 0xA8A8A8
+});
+var u_torus = new THREE.Mesh(u_geometry, u_material);
 u_torus.rotation.x = Math.PI / 2;
 scene.add(u_torus);
 
 
 
 // NEPTUNE
-var neptune =  new THREE.Mesh(
+var neptune = new THREE.Mesh(
     new THREE.SphereGeometry(1000, 80, 80),
     new THREE.MeshPhongMaterial({
-    emissive: 0xffffff,
-    emissiveMap: loader.load('images/neptunemap.jpg')
-})
+        emissive: 0xffffff,
+        emissiveMap: loader.load('images/neptunemap.jpg')
+    })
 );
 
 neptune.position.set(21000, 0, 0);
@@ -360,14 +384,13 @@ scene.add(neptune);
 
 
 // NEPTUNE ORBIT
-var n_geometry = new THREE.TorusGeometry( 60000, 40, 16, 100 );
-var n_material = new THREE.MeshBasicMaterial( { color: 0xA8A8A8 } );
-var n_torus = new THREE.Mesh( n_geometry, n_material );
+var n_geometry = new THREE.TorusGeometry(60000, 40, 16, 100);
+var n_material = new THREE.MeshBasicMaterial({
+    color: 0xA8A8A8
+});
+var n_torus = new THREE.Mesh(n_geometry, n_material);
 n_torus.rotation.x = Math.PI / 2;
 scene.add(n_torus);
-
-
-
 
 
 
@@ -412,9 +435,6 @@ scene.add(directionalLight);
 var t = 0;
 var yx = 0;
 
-function render() {
-    renderer.render(scene, camera);
-}
 
 // Controls using Mouse and Keys.
 controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -442,7 +462,6 @@ function animate() {
     moon.rotation.y += 0.002;
     moon.position.x = Math.sin(t * 0.1) * 7000;
     moon.position.z = Math.cos(t * 0.1) * 7000;
-
 
 
     // Earth rotation around the Sun.
@@ -494,3 +513,61 @@ function animate() {
     renderer.render(scene, camera);
 }
 //requestAnimationFrame(update);
+
+
+// INTERACTING WITH MODELS
+
+const domEvents = new THREEx.DomEvents(camera, renderer.domElement);
+
+// SUN INTERACTION
+domEvents.addEventListener(sun, 'click', event=>{
+    window.alert("Sun");
+})
+
+// MERCURY INTERACTION
+domEvents.addEventListener(mercury, 'click', event=>{
+    window.alert("Earth");
+})
+
+// MARS INTERACTION
+domEvents.addEventListener(mars, 'click', event=>{
+    window.alert("Earth");
+})
+
+// EARTH INTERACTION
+domEvents.addEventListener(earth, 'click', event=>{
+    window.alert("Earth");
+})
+
+// MOON INTERACTION
+domEvents.addEventListener(moon, 'click', event=>{
+    window.alert("Earth");
+})
+
+
+// VENUS INTERACTION
+domEvents.addEventListener(venus, 'click', event=>{
+    window.alert("Earth");
+})
+
+
+// JUPITER INTERACTION
+domEvents.addEventListener(jupiter, 'click', event=>{
+    window.alert("Earth");
+})
+
+// SATURN INTERACTION
+domEvents.addEventListener(saturn, 'click', event=>{
+    window.alert("Earth");
+})
+
+// URANUS INTERACTION
+domEvents.addEventListener(uranus, 'click', event=>{
+    window.alert("Earth");
+})
+
+// NEPTUNE INTERACTION
+domEvents.addEventListener(neptune, 'click', event=>{
+    window.alert("Earth");
+})
+
