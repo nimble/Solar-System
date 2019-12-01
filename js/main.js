@@ -13,24 +13,25 @@
 var scene, camera, renderer
 var W, H;
 var delta = 1.; //Math.delta;
+var check1 = true;
+var check2 = true;
 
 W = parseInt(window.innerWidth);
 H = parseInt(window.innerHeight);
 
 // Camera Position
-camera = new THREE.PerspectiveCamera(45, W / H, 1, 100000);
+camera = new THREE.PerspectiveCamera(45, W / H, 1, 100000000);
 
-camera.position.z = 36300;
-camera.position.y = 10000;
-camera.position.x = 36300;
+camera.position.z = 80000;
+camera.position.y = 120000;
+camera.position.x = 80000;
 
-//camera.position.set(-1,100,200);
 
 scene = new THREE.Scene();
-
-// renderer
 renderer = new THREE.WebGLRenderer();
 renderer.setSize(W, H);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.BasicShadowMap;
 document.body.appendChild(renderer.domElement);
 
 
@@ -45,12 +46,12 @@ var starsMaterial = new THREE.PointsMaterial({
 var stars;
 
 // Adding stars to the Scene.
-for (var i = 0; i < 45000; i++) {
+for (var i = 0; i < 1000; i++) {
     var vertex = new THREE.Vector3();
     vertex.x = Math.random() * 2 - 1;
     vertex.y = Math.random() * 2 - 1;
     vertex.z = Math.random() * 2 - 1;
-    vertex.multiplyScalar(7000);
+    vertex.multiplyScalar(15000);
     starsGeometry.vertices.push(vertex);
 }
 
@@ -84,6 +85,9 @@ stars2.scale.set(70, 150, 100);
 scene.add(stars2);
 
 
+
+// ---------------------------------------------------------
+// PLANET LIGHTNING CHECK DONE HERE.
 var intensity = 0.2;
 lights1 = new THREE.AmbientLight(0xffffff,intensity);
 lights2 = new THREE.PointLight(0xffffff,0.8,1000000,0.25);
@@ -94,8 +98,6 @@ lights2.shadow.camera.far = 500
 lights2.position.set = (0,0,0); // Center of the sun.
 scene.add(lights1);
 scene.add(lights2);
-
-
 // ---------------------------------------------------------
 // SOLAR SYSTEM PLANETS IMPLEMENTED HERE
 
@@ -106,7 +108,6 @@ var sun_geom = new THREE.SphereGeometry(8000, 80, 80);
 var sun_material = new THREE.MeshPhongMaterial({
     emissiveMap: loader.load('images/sun.jpg'),
     emissive: 0xffffff
-
 });
 var sun = new THREE.Mesh(sun_geom, sun_material);
 
@@ -119,25 +120,34 @@ var spriteMaterial = new THREE.SpriteMaterial({
     blending: THREE.AdditiveBlending
 });
 var sprite = new THREE.Sprite(spriteMaterial);
-sprite.scale.set(7000, 7000, 7000);
-scene.add(sprite); // This centers the glow at the sun.
+sprite.scale.set(29000, 29000, 29000);
+sun.add(sprite); // This centers the glow at the sun.
+
+// SUN GLOW 2
+var spriteMaterial2 = new THREE.SpriteMaterial({
+    map: new THREE.ImageUtils.loadTexture("images/sunlight2.jpg"),
+    useScreenCoordinates: false,
+    color: 0xffffee,
+    transparent: false,
+    blending: THREE.AdditiveBlending
+});
+var sprite2 = new THREE.Sprite(spriteMaterial2);
+sprite2.scale.set(26000, 26000, 26000);
+sun.add(sprite2); // This centers the glow at the sun.
 
 scene.add(sun);
 
 
 // MOON 
-
 var moon = new THREE.Mesh(
     new THREE.SphereGeometry(1000, 80, 80),
     new THREE.MeshPhongMaterial({
-        emissiveMap: loader.load('images/moonmap4k.jpg'),
-        emissive: 0xffffff,
-        bumpMap: loader.load('images/moonbump4k.jpg'),
+        map	: THREE.ImageUtils.loadTexture('images/moonmap4k.jpg'),
+        bumpMap	: THREE.ImageUtils.loadTexture('images/moonbump4k.jpg'),
         bumpScale: 0.005,
-
     })
 );
-moon.position.set(4000, 0, 0)
+moon.position.set(10000, 0, 0)
 scene.add(moon)
 
 
@@ -146,29 +156,25 @@ scene.add(moon)
 var earth = new THREE.Mesh(
     new THREE.SphereGeometry(1000, 80, 80),
     new THREE.MeshPhongMaterial({
-        emissive: 0xffffff,
-        emissiveMap: loader.load('images/earthmap1k.jpg'),
-        bumpMap: loader.load('images/earthbump1k.jpg'),
+        map: new THREE.ImageUtils.loadTexture('images/earthmap1k.jpg'),
+        bumpMap: new THREE.ImageUtils.loadTexture('images/earthbump1k.jpg'),
         bumpScale: 0.05,
-        specularMap: loader.load('images/earthspec1k.jpg'),
+        specularMap: new THREE.ImageUtils.loadTexture('images/earthspec1k.jpg'),
         specular: new THREE.Color('grey'),
     })
 );
 
 
 // EARTH CLOUDS
-function createClouds() {
-    return new THREE.Mesh(
-        new THREE.SphereGeometry(800, 80, 80),
+var earthClouds = new THREE.Mesh(
+        new THREE.SphereGeometry(1000, 80, 80),
         new THREE.MeshPhongMaterial({
-            map: loader.load('images/fair_clouds_8k.jpg'),
+            map: THREE.ImageUtils.loadTexture('images/earthcloudmap.jpg'),
             transparent: true,
         })
-    );
-}
-
-earth.position.set(8500, 0, 0);
-earth.add(createClouds());
+    
+);
+//scene.add(earthClouds);
 scene.add(earth);
 
 
@@ -187,9 +193,8 @@ scene.add(e_torus);
 var mercury = new THREE.Mesh(
     new THREE.SphereGeometry(400, 80, 80),
     new THREE.MeshPhongMaterial({
-        emissive: 0xffffff,
-        emissiveMap: loader.load('images/mercurymap.jpg'),
-        bumpMap: loader.load('images/mercurybump.jpg'),
+        map	: THREE.ImageUtils.loadTexture('images/mercurymap.jpg'),
+        bumpMap	: THREE.ImageUtils.loadTexture('images/mercurybump.jpg'),
         bumpScale: 0.005,
     })
 );
@@ -212,11 +217,10 @@ scene.add(mer_torus);
 // VENUS
 
 var venus = new THREE.Mesh(
-    new THREE.SphereGeometry(1000, 80, 80),
+    new THREE.SphereGeometry(800, 80, 80),
     new THREE.MeshPhongMaterial({
-        emissive: 0xffffff,
-        emissiveMap: loader.load('images/venusmap.jpg'),
-        bumpMap: loader.load('images/venusbump.jpg'),
+        map: new THREE.ImageUtils.loadTexture('images/venusmap.jpg'),
+        bumpMap: new THREE.ImageUtils.loadTexture('images/venusbump.jpg'),
         bumpScale: 0.005,
     })
 );
@@ -237,11 +241,10 @@ scene.add(v_torus);
 // MARS
 
 var mars = new THREE.Mesh(
-    new THREE.SphereGeometry(1000, 80, 80),
+    new THREE.SphereGeometry(750, 80, 80),
     new THREE.MeshPhongMaterial({
-        emissive: 0xffffff,
-        emissiveMap: loader.load('images/marsmap1k.jpg'),
-        bumpMap: loader.load('images/marsbump1k.jpg'),
+        map: new THREE.ImageUtils.loadTexture('images/marsmap1k.jpg'),
+        bumpMap: new THREE.ImageUtils.loadTexture('images/marsbump1k.jpg'),
         bumpScale: 0.005,
     })
 );
@@ -263,10 +266,9 @@ scene.add(m_torus);
 
 // JUPITER 
 var jupiter = new THREE.Mesh(
-    new THREE.SphereGeometry(1000, 80, 80),
+    new THREE.SphereGeometry(2500, 80, 80),
     new THREE.MeshPhongMaterial({
-        emissive: 0xffffff,
-        emissiveMap: loader.load('images/jupitermap.jpg')
+        map: new THREE.ImageUtils.loadTexture('images/jupitermap.jpg')
     })
 );
 
@@ -287,10 +289,9 @@ scene.add(j_torus);
 
 // SATURN
 var saturn = new THREE.Mesh(
-    new THREE.SphereGeometry(1000, 80, 80),
+    new THREE.SphereGeometry(2000, 80, 80),
     new THREE.MeshPhongMaterial({
-        emissive: 0xffffff,
-        emissiveMap: loader.load('images/saturnmap.jpg')
+        map: new THREE.ImageUtils.loadTexture('images/saturnmap.jpg')
     })
 );
 saturn.position.set(16000, 0, 0);
@@ -308,13 +309,13 @@ scene.add(s_torus);
 
 // SATURN RING
 
-var radius = 1000;
+var radius = 2000;
 var segments = 100;
 
 function createSaturnRings(radius, segments) {
     return new THREE.Mesh(new THREE.XRingGeometry(1.2 * radius, 2 * radius, 2 * segments, 5, 0, Math.PI * 2),
         new THREE.MeshBasicMaterial({
-            map: loader.load('images/saturn-rings-2.png'),
+            map: new THREE.ImageUtils.loadTexture('images/saturn-rings-2.png'),
             side: THREE.DoubleSide,
             transparent: true,
             opacity: 0.6
@@ -330,8 +331,7 @@ scene.add(saturnRing);
 var uranus = new THREE.Mesh(
     new THREE.SphereGeometry(1000, 80, 80),
     new THREE.MeshPhongMaterial({
-        emissive: 0xffffff,
-        emissiveMap: loader.load('images/uranusmap.jpg')
+        map: new THREE.ImageUtils.loadTexture('images/uranusmap.jpg')
     })
 );
 uranus.position.set(18500, 0, 0);
@@ -346,7 +346,7 @@ var segments1 = 100;
 function createUranusRings(radius1, segments1) {
     return new THREE.Mesh(new THREE.XRingGeometry(1.2 * radius1, 2 * radius1, 2 * segments1, 5, 0, Math.PI * 2),
         new THREE.MeshBasicMaterial({
-            map: loader.load('images/uranusringcolour.jpg'),
+            map: new THREE.ImageUtils.loadTexture('images/uranusringcolour.jpg'),
             side: THREE.DoubleSide,
             transparent: true,
             opacity: 0.6
@@ -372,10 +372,9 @@ scene.add(u_torus);
 
 // NEPTUNE
 var neptune = new THREE.Mesh(
-    new THREE.SphereGeometry(1000, 80, 80),
+    new THREE.SphereGeometry(900, 80, 80),
     new THREE.MeshPhongMaterial({
-        emissive: 0xffffff,
-        emissiveMap: loader.load('images/neptunemap.jpg')
+        emissiveMap: new THREE.ImageUtils.loadTexture('images/neptunemap.jpg')
     })
 );
 
@@ -392,48 +391,62 @@ var n_torus = new THREE.Mesh(n_geometry, n_material);
 n_torus.rotation.x = Math.PI / 2;
 scene.add(n_torus);
 
-
-
 // ---------------------------------------------------------------
-
-//----------------------------------------------------------------
-// Ambient Lightining and Directional Lightning DONE BELOW
-
-/*
-scene.add(new THREE.AmbientLight(0x404040));
-var light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(5,3,5);
-scene.add(light);
-
-// Ambient light to the Scene.
-var ambientLight = new THREE.AmbientLight(0x404040);
-scene.add(ambientLight);
-
-
-// Directional Lighting
-
-var directionalLight = new THREE.DirectionalLight(0xffffff);
-directionalLight.position.x = 1;
-directionalLight.position.y = 1;
-directionalLight.position.z = 0.75;
-directionalLight.position.normalize();
-scene.add(directionalLight);
-
-
-var directionalLight = new THREE.DirectionalLight(0x808080);
-directionalLight.position.x = -1;
-directionalLight.position.y = 1;
-directionalLight.position.z = -0.75;
-directionalLight.position.normalize();
-scene.add(directionalLight);
-*/
-
-
-
-//----------------------------------------------------------------
-
 var t = 0;
-var yx = 0;
+setupGui();
+//Gui
+function setupAmb(check1)
+{
+  if (check1 == false)
+  {
+    lights1.visible = false;
+  }
+  else
+  {
+    lights1.visible = true;
+  }
+}
+
+function setupPnt(check2)
+{
+  if (check2 == false)
+  {
+    lights2.visible = false;
+  }
+  else
+  {
+    lights2.visible = true;
+  }
+}
+function setupGui() {
+  gui = new dat.GUI;
+  controllers = [];
+
+  var menu = {
+    'NoAmbientLight': false,
+    'NoPointLight': false,
+  }
+
+  controllers[0] = gui
+    .add(menu, 'NoAmbientLight')
+    .listen()
+    .onFinishChange(
+        function(value) {
+            check1 = !check1;
+            setupAmb(check1)
+        }
+      );
+    controllers[0] = gui
+      .add(menu, 'NoPointLight')
+      .listen()
+      .onFinishChange(
+          function(value) {
+              check2 = !check2;
+              setupPnt(check2)
+          }
+    );
+}
+//----------------------------------------------------------------
 
 
 // Controls using Mouse and Keys.
@@ -447,127 +460,227 @@ function animate() {
     // Sun remains centered while rest of the planets rotate.
     sun.rotation.y += 0.001;
 
-    // Mercury Rotation
+    // Mercury
     mercury.rotation.y += 0.002;
-    mercury.position.x = Math.sin(t * 1) * 4000;
-    mercury.position.z = Math.cos(t * 1) * 4000;
+    mercury.position.x = Math.sin(t * 1) * 10000;
+    mercury.position.z = Math.cos(t * 1) * 10000;
 
-
-    // Venus Rotation
+    // Venus
     venus.rotation.y += 0.002;
-    venus.position.x = Math.sin(t * 0.1) * 7000;
-    venus.position.z = Math.cos(t * 0.1) * 7000;
+    venus.position.x = Math.sin(t * 0.8) * 14000;
+    venus.position.z = Math.cos(t * 0.8) * 14000;
+
+    // Earth 
+    earth.rotation.y += 0.002;
+    earth.position.x = Math.sin(t * 0.59) * 19000;
+    earth.position.z = Math.cos(t * 0.59) * 19000;
+
+    // Earth Clouds
+    earthClouds.rotation.y += 0.002;
+    earthClouds.position.x = Math.sin(t * 0.59) * 19000;
+    earthClouds.position.z = Math.cos(t * 0.59) * 19000;
 
     // Moon Rotation
     moon.rotation.y += 0.002;
-    moon.position.x = Math.sin(t * 0.1) * 7000;
-    moon.position.z = Math.cos(t * 0.1) * 7000;
-
-
-    // Earth rotation around the Sun.
-    earth.rotation.y += 0.002;
-    earth.position.x = Math.sin(t * 0.1) * 10000;
-    earth.position.z = Math.cos(t * 0.1) * 10000;
+    moon.position.x =earth.position.x * Math.sin(t * 0.59) * 19000;
+    moon.position.z =earth.position.z * Math.sin(t * 0.59) * 19000;
 
     // Mars Rotation
     mars.rotation.y += 0.002;
-    mars.position.x = Math.sin(t * 0.1) * 13000;
-    mars.position.z = Math.cos(t * 0.1) * 13000;
+    mars.position.x = Math.sin(t * 0.5) * 23000;
+    mars.position.z = Math.cos(t * 0.5) * 23000;
 
-    // Jupiter Rotation
+    // Jupiter
     jupiter.rotation.y += 0.002;
-    jupiter.position.x = Math.sin(t * 0.1) * 16000;
-    jupiter.position.z = Math.cos(t * 0.1) * 16000;
+    jupiter.position.x = Math.sin(t * 0.3) * 31000;
+    jupiter.position.z = Math.cos(t * 0.3) * 31000;
 
-    // Saturn Rotation
+    // Saturn
     saturn.rotation.y += 0.002;
-    saturn.position.x = Math.sin(t * 0.1) * 19000;
-    saturn.position.z = Math.cos(t * 0.1) * 19000;
+    saturn.position.x = Math.sin(t * 0.2) * 40000;
+    saturn.position.z = Math.cos(t * 0.2) * 40000;
 
     // Saturn Ring Rotation
     saturnRing.rotation.y += 0.002;
-    saturnRing.position.x = Math.sin(t * 0.1) * 19000;
-    saturnRing.position.z = Math.cos(t * 0.1) * 19000;
+    saturnRing.position.x = Math.sin(t * 0.2) * 40000;
+    saturnRing.position.z = Math.cos(t * 0.2) * 40000;
 
-    // Uranus Rotation
+    // Uranus 
     uranus.rotation.y += 0.002;
-    uranus.position.x = Math.sin(t * 0.1) * 22000;
-    uranus.position.z = Math.cos(t * 0.1) * 22000;
+    uranus.position.x = Math.sin(t * 0.13) * 50000;
+    uranus.position.z = Math.cos(t * 0.13) * 50000;
 
     // Uranus Ring Rotation
     uranusRing.rotation.y += 0.002;
-    uranusRing.position.x = Math.sin(t * 0.1) * 22000;
-    uranusRing.position.z = Math.cos(t * 0.1) * 22000;
+    uranusRing.position.x = Math.sin(t * 0.13) * 50000;
+    uranusRing.position.z = Math.cos(t * 0.13) * 50000;
 
-    // Neptune Rotation
+    // Neptune
     neptune.rotation.y += 0.002;
-    neptune.position.x = Math.sin(t * 0.1) * 25000;
-    neptune.position.z = Math.cos(t * 0.1) * 25000;
-
-    // Uncomment to move screen with cursor.
-    //camera.position.y = yx * 5;
+    neptune.position.x = Math.sin(t * 0.1) * 60000;
+    neptune.position.z = Math.cos(t * 0.1) * 60000;
 
     t += Math.PI / 180 * 2;
     camera.lookAt(scene.position);
-    controls.update();
     renderer.render(scene, camera);
+    controls.update();
 }
-//requestAnimationFrame(update);
 
 
 // INTERACTING WITH MODELS
-
 const domEvents = new THREEx.DomEvents(camera, renderer.domElement);
 
 // SUN INTERACTION
 domEvents.addEventListener(sun, 'click', event=>{
-    window.alert("Sun");
+    Swal.fire({
+        title: 'Sun',
+        confirmButtonColor: '#FF5700',
+        text: 'The Sun—the heart of our solar system—is a yellow dwarf star, a hot ball of glowing gases.',
+        footer: '<a href="https://solarsystem.nasa.gov/solar-system/sun/overview/">Wanna learn more?</a>',
+        imageUrl: 'img/sun.jpg',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+        background: 'black',
+      })
 })
+
 
 // MERCURY INTERACTION
 domEvents.addEventListener(mercury, 'click', event=>{
-    window.alert("Earth");
+    Swal.fire({
+        title: 'Mercury',
+        confirmButtonColor: '#FF5700',
+        text: 'The smallest planet in our solar system and nearest to the Sun, Mercury is only slightly larger than Earths Moon..',
+        footer: '<a href="https://solarsystem.nasa.gov/planets/mercury/overview/">Wanna learn more?</a>',
+        imageUrl: 'img/mercury.jpg',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+        background: 'black',
+      })
 })
 
 // MARS INTERACTION
 domEvents.addEventListener(mars, 'click', event=>{
-    window.alert("Earth");
+        Swal.fire({
+        title: 'Mars',
+        confirmButtonColor: '#FF5700',
+        text: 'The fourth planet from the Sun, Mars is a dusty, cold, desert world with a very thin atmosphere.',
+        footer: '<a href="https://solarsystem.nasa.gov/planets/mars/overview/">Wanna learn more?</a>',
+        imageUrl: 'img/mars.jpeg',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+        background: 'black',
+      })
 })
+
 
 // EARTH INTERACTION
 domEvents.addEventListener(earth, 'click', event=>{
-    window.alert("Earth");
+    Swal.fire({
+        title: 'Earth',
+        confirmButtonColor: '#FF5700',
+        text: 'Our home planet is the third planet from the Sun, and the only place we know of so far that’s inhabited by living things.',
+        footer: '<a href="https://solarsystem.nasa.gov/planets/earth/overview/">Wanna learn more?</a>',
+        imageUrl: 'img/earth.jpg',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+        background: 'black',
+      });
 })
 
 // MOON INTERACTION
 domEvents.addEventListener(moon, 'click', event=>{
-    window.alert("Earth");
+    Swal.fire({
+        title: 'Moon',
+        confirmButtonColor: '#FF5700',
+        text: 'Earths Moon is the only place beyond Earth where humans have set foot.',
+        footer: '<a href="https://solarsystem.nasa.gov/moons/earths-moon/overview/">Wanna learn more?</a>',
+        imageUrl: 'img/moon.jpg',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+        background: 'black',
+      });
 })
 
 
 // VENUS INTERACTION
 domEvents.addEventListener(venus, 'click', event=>{
-    window.alert("Earth");
+    Swal.fire({
+        title: 'Venus',
+        confirmButtonColor: '#FF5700',
+        text: 'Second planet from the Sun and our closest planetary neighbor, Venus is similar in structure and size to Earth, but it is now a very different world.',
+        footer: '<a href="https://solarsystem.nasa.gov/planets/venus/overview/">Wanna learn more?</a>',
+        imageUrl: 'img/venus.jpg',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+        background: 'black',
+      });
 })
 
 
 // JUPITER INTERACTION
 domEvents.addEventListener(jupiter, 'click', event=>{
-    window.alert("Earth");
+    Swal.fire({
+        title: 'Jupiter',
+        confirmButtonColor: '#FF5700',
+        text: 'Fifth in line from the Sun, Jupiter is, by far, the largest planet in the solar system – more than twice as massive as all the other planets combined.',
+        footer: '<a href="https://solarsystem.nasa.gov/planets/jupiter/overview/">Wanna learn more?</a>',
+        imageUrl: 'img/jupiter.jpg',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+        background: 'black',
+      });
 })
 
 // SATURN INTERACTION
 domEvents.addEventListener(saturn, 'click', event=>{
-    window.alert("Earth");
+    Swal.fire({
+        title: 'Saturn',
+        confirmButtonColor: '#FF5700',
+        text: 'Saturn is the sixth planet from the Sun and the second largest planet in our solar system.',
+        footer: '<a href="https://solarsystem.nasa.gov/planets/saturn/overview/">Wanna learn more?</a>',
+        imageUrl: 'img/saturn.jpg',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+        background: 'black',
+      });
 })
 
 // URANUS INTERACTION
 domEvents.addEventListener(uranus, 'click', event=>{
-    window.alert("Earth");
+    Swal.fire({
+        title: 'Uranus',
+        confirmButtonColor: '#FF5700',
+        text: 'The seventh planet from the Sun with the third largest diameter in our solar system, Uranus is very cold and windy.',
+        footer: '<a href="https://solarsystem.nasa.gov/planets/uranus/overview/">Wanna learn more?</a>',
+        imageUrl: 'img/uranus.jpg',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+        background: 'black',
+      });
 })
 
 // NEPTUNE INTERACTION
 domEvents.addEventListener(neptune, 'click', event=>{
-    window.alert("Earth");
+    Swal.fire({
+        title: 'Neptune',
+        confirmButtonColor: '#FF5700',
+        text: 'Dark, cold and whipped by supersonic winds, ice giant Neptune is the eighth and most distant planet in our solar system.',
+        footer: '<a href="https://solarsystem.nasa.gov/planets/neptune/overview/">Wanna learn more?</a>',
+        imageUrl: 'img/neptune.jpg',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+        background: 'black',
+      });
 })
 
