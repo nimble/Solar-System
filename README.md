@@ -19,4 +19,5 @@ Built with **Javascript**.
 
 Author(s): Jona Sahota **&** Jason Barboza
 
+**Output**:
 ![](https://i.gyazo.com/0c880f765a7cdbdd28e2784e4c0150f6.gif)
