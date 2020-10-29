@@ -11,7 +11,7 @@ The Program consists of the following:
   - User controlled display of relevant information for the user.
   - Easy of use.
   - Aesthetically pleasing.
-  - Additional features for teaching (Links).'
+  - Additional features for teaching (Links).
 ```
 
 Built with **Javascript**.
