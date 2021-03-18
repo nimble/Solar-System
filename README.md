@@ -9,13 +9,11 @@ The Program consists of the following:
   - User controlled Animations.
   - User controlled navigation.
   - User controlled display of relevant information for the user.
-  - Easy of use.
-  - Aesthetically pleasing.
   - Additional features for teaching (Links).
 ```
+Easy of use & Aesthetically pleasing.
 
 Built with **Javascript**.
-
 
 Author(s): Jona Sahota **&** Jason Barboza
 
