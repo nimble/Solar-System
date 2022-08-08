@@ -17,7 +17,7 @@ Easy of use & Aesthetically pleasing.
 
 Built with **Javascript**.
 
-Author(s): Jona Sahota **&** Jason Barboza
+Author(s): Jona S **&** Jason Barboza
 
 **Output**:
 ![](https://i.gyazo.com/0c880f765a7cdbdd28e2784e4c0150f6.gif)
