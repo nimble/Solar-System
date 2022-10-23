@@ -1,5 +1,5 @@
-# CP411-Final-Project
-This **Solar System** is intended for Educational Purposes only.
+# Solay System
+This **Solar System** is intended for Educational Purposes only. Final Project for CP411 (Computer Graphics).
 
 Deployed: https://cp411-solar-system.herokuapp.com/
 
